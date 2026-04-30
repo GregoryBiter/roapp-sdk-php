@@ -22,11 +22,10 @@ class Api
      * @param string $url API endpoint
      * @param array $params Request parameters
      * @param string $type HTTP method (GET, POST, PATCH, DELETE)
-     * @param string|null $model Optional model name to add to response
      * @return array API response
     * @throws RoappApiException On request failure, invalid API key, rate limiting, or JSON parsing errors
      */
-    public function api(string $url, array $params = [], string $type = 'GET', string $model = null): array
+    public function api(string $url, array $params = [], string $type = 'GET'): array
     {
 
         $fullUrl = self::APIURL . ltrim($url, '/');
@@ -57,18 +56,10 @@ class Api
         switch (strtoupper($type)) {
             case 'GET':
                 if (!empty($params)) {
-                    // Строим строку запроса с повторяющимися ключами для массивов
-                    $queryParts = [];
-                    foreach ($params as $key => $value) {
-                        if (is_array($value)) {
-                            foreach ($value as $val) {
-                                $queryParts[] = urlencode($key) . '=' . urlencode($val);
-                            }
-                        } else {
-                            $queryParts[] = urlencode($key) . '=' . urlencode($value);
-                        }
+                    $queryString = $this->buildQueryString($params);
+                    if ($queryString !== '') {
+                        $fullUrl .= '?' . $queryString;
                     }
-                    $fullUrl .= '?' . implode('&', $queryParts);
                 }
                 curl_setopt($ch, CURLOPT_URL, $fullUrl);
                 break;
@@ -133,6 +124,10 @@ class Api
         // Get HTTP status code
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+
+        if ($this->isEmptySuccessfulResponse($response, $httpCode)) {
+            return [];
+        }
 
         // Parse JSON response first to get error details
         $responseBody = json_decode($response, true);
@@ -203,11 +198,71 @@ class Api
             );
         }
 
-        if ($model) {
-            $responseBody['model'] = $model;
+        return $responseBody;
+    }
+
+    /**
+     * Build a query string while skipping nulls and empty arrays.
+     */
+    protected function buildQueryString(array $params): string
+    {
+        $queryParts = [];
+
+        foreach ($params as $key => $value) {
+            if ($value === null || $value === '') {
+                continue;
+            }
+
+            if (is_array($value)) {
+                if ($value === []) {
+                    continue;
+                }
+
+                foreach ($value as $item) {
+                    if ($item === null || $item === '') {
+                        continue;
+                    }
+
+                    $queryParts[] = urlencode($key) . '=' . urlencode($this->normalizeQueryValue($item));
+                }
+
+                continue;
+            }
+
+            $queryParts[] = urlencode($key) . '=' . urlencode($this->normalizeQueryValue($value));
         }
 
-        return $responseBody;
+        return implode('&', $queryParts);
+    }
+
+    /**
+     * Normalize scalar query values before serialization.
+     *
+     * @param mixed $value
+     */
+    protected function normalizeQueryValue($value): string
+    {
+        if (is_bool($value)) {
+            return $value ? '1' : '0';
+        }
+
+        return (string) $value;
+    }
+
+    /**
+     * Treat empty successful responses, including 204, as valid empty payloads.
+     */
+    protected function isEmptySuccessfulResponse(string $response, int $httpCode): bool
+    {
+        if ($httpCode >= 400) {
+            return false;
+        }
+
+        if ($httpCode === 204) {
+            return true;
+        }
+
+        return trim($response) === '';
     }
 
     /**

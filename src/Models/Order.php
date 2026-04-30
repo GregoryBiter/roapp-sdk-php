@@ -7,7 +7,7 @@ use Gbit\Roapp\RoappClient;
 class Order extends Models
 {
 
-    private $endpoint = 'orders';
+    private $endpoint = 'v2/orders';
     /**
      * Конструктор класса Order
      *
@@ -25,7 +25,7 @@ class Order extends Models
      */
     public function getStatuses(): array
     {
-        return $this->api->request('statuses/'.$this->endpoint, [], 'GET');
+        return $this->api->request($this->endpoint . '/statuses', [], 'GET');
     }
 
     /**
@@ -129,7 +129,7 @@ class Order extends Models
      */
     public function updateItem(int $order_id, int $item_id, array $data): array
     {
-        return $this->api->request("{$this->endpoint}/{$order_id}/items/{$item_id}", $data, 'POST');
+        return $this->api->request("{$this->endpoint}/{$order_id}/items/{$item_id}", $data, 'PATCH');
     }
 
     /**

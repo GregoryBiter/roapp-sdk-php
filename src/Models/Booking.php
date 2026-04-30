@@ -4,9 +4,14 @@ namespace Gbit\Roapp\Models;
 
 use Gbit\Roapp\RoappClient;
 
+/**
+ * Class Booking
+ *
+ * @package Gbit\Roapp\Models
+ */
 class Booking extends Models
 {
-    private $endpoint = 'bookings';
+    private $endpoint = 'v2/bookings';
 
     public function __construct(RoappClient $api)
     {

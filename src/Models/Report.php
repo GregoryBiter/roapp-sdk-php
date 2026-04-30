@@ -6,7 +6,7 @@ use Gbit\Roapp\RoappClient;
 
 class Report extends Models
 {
-    private $endpoint = 'reports';
+    private $endpoint = 'v2/reports';
 
     public function __construct(RoappClient $api)
     {

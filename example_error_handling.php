@@ -51,7 +51,7 @@ try {
     $client = new RoappClient('your-api-key-here');
     
     // Запрос с автоматическими повторами
-    $response = $client->requestWithRetry('orders', [], 'GET', '', 3, 2);
+    $response = $client->requestWithRetry('orders', [], 'GET', 3, 2);
     
     echo "Ответ получен (возможно, после повторов): " . json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     

@@ -20,10 +20,10 @@ class RoappClient
         $this->api = new Api($apiKey);
     }
 
-    public function request(string $url, array $params, string $type, string $model = ''): array
+    public function request(string $url, array $params, string $type): array
     {
         try {
-            return $this->api->api($url, $params, $type, $model);
+            return $this->api->api($url, $params, $type);
         } catch (RoappApiException $e) {
             $this->pushLogs([
                 'error_type' => 'RoappApiException',
@@ -43,7 +43,6 @@ class RoappClient
         string $url,
         array $params,
         string $type,
-        string $model = '',
         int $maxRetries = 3,
         int $retryDelay = 1
     ): array {
@@ -51,7 +50,7 @@ class RoappClient
 
         while ($attempt <= $maxRetries) {
             try {
-                return $this->request($url, $params, $type, $model);
+                return $this->request($url, $params, $type);
             } catch (RoappApiException $e) {
                 if ($e->isRateLimitError() && $attempt < $maxRetries) {
                     $attempt++;

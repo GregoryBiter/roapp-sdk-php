@@ -6,7 +6,7 @@ use Gbit\Roapp\RoappClient;
 
 class Postings extends Models
 {
-    private $endpoint = 'postings';
+    private $endpoint = 'v2/postings';
 
     public function __construct(RoappClient $api)
     {

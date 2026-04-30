@@ -6,7 +6,7 @@ use Gbit\Roapp\RoappClient;
 
 class People extends Models
 {
-    private $endpoint = 'contacts/people';
+    private $endpoint = 'v2/contacts/people';
 
     public function __construct(RoappClient $api)
     {
@@ -25,7 +25,7 @@ class People extends Models
 
     public function getOrganization(int $person_id): array
     {
-        return $this->api->request($this->endpoint . '/' . $person_id . '/organization', [], 'GET');
+        return $this->api->request($this->endpoint . '/' . $person_id . '/organizations', [], 'GET');
     }
 
     public function create(array $data = []): array
@@ -43,9 +43,13 @@ class People extends Models
         return $this->api->request($this->endpoint . '/' . $person_id, [], 'DELETE');
     }
 
-    public function addComment(int $person_id, string $comment): array
+    public function addComment(int $person_id, string $comment, bool $isPrivate = false): array
     {
-        return $this->api->request($this->endpoint . '/' . $person_id . '/comments', ['comment' => $comment], 'POST');
+        return $this->api->request(
+            $this->endpoint . '/' . $person_id . '/comments',
+            ['comment' => $comment, 'is_private' => $isPrivate],
+            'POST'
+        );
     }
 
     public function merge(int $person_id, array $ids): array

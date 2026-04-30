@@ -6,7 +6,7 @@ use Gbit\Roapp\RoappClient;
 
 class SMS extends Models
 {
-    private $endpoint = 'sms';
+    private $endpoint = 'v2/sms';
 
     public function __construct(RoappClient $api)
     {

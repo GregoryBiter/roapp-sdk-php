@@ -6,7 +6,7 @@ use Gbit\Roapp\RoappClient;
 
 class Invoice extends Models
 {
-    private $endpoint = 'invoices';
+    private $endpoint = 'v2/invoices';
 
     public function __construct(RoappClient $api)
     {

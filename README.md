@@ -108,21 +108,21 @@ use Gbit\Roapp\Api;
 
 $api = new Api('your_api_key_here');
 
-// GET запрос
-$response = $api->api('orders', ['page' => 1, 'status' => 'new'], 'GET');
+// GET запрос к v2 endpoint
+$response = $api->api('v2/orders', ['page' => 1, 'status' => 'new'], 'GET');
 
 // POST запрос
 $data = [
     'title' => 'Новая задача',
     'description' => 'Создана через API'
 ];
-$response = $api->api('tasks', $data, 'POST');
+$response = $api->api('v2/tasks', $data, 'POST');
 
 // PATCH запрос
-$response = $api->api('orders/123', ['status_id' => 5], 'PATCH');
+$response = $api->api('v2/orders/123', ['status_id' => 5], 'PATCH');
 
 // DELETE запрос
-$response = $api->api('tasks/456', [], 'DELETE');
+$response = $api->api('v2/tasks/456', [], 'DELETE');
 ```
 
 ## 📚 Доступные модели и методы
@@ -194,7 +194,7 @@ $people->update(100, ['email' => 'new@example.com']);
 $people->delete(100);
 
 // Добавить комментарий
-$people->addComment(100, 'Постоянный клиент');
+$people->addComment(100, 'Постоянный клиент', true);
 
 // Объединить клиентов
 $people->merge(100, [101, 102]);
@@ -311,9 +311,6 @@ $invoice->get(['page' => 1]);
 // Получить счёт по ID
 $invoice->getByID(300);
 
-// Получить статусы счетов
-$invoice->getStatuses();
-
 // Создать счёт
 $invoice->create([
     'client_id' => 100,
@@ -323,24 +320,6 @@ $invoice->create([
 
 // Обновить счёт
 $invoice->update(300, ['comment' => 'Срочный']);
-
-// Установить статус счёта
-$invoice->setStatus(300, 5, 'Оплачено');
-
-// Получить позиции счёта
-$invoice->getItems(300);
-
-// Добавить позицию в счёт
-$invoice->addItem(300, ['product_id' => 50, 'quantity' => 1]);
-
-// Обновить позицию счёта
-$invoice->updateItem(300, 1, ['quantity' => 2]);
-
-// Отправить счёт
-$invoice->send(300, ['email' => 'client@example.com']);
-
-// Отметить как оплаченный
-$invoice->markAsPaid(300, ['amount' => 5000]);
 
 // Удалить счёт
 $invoice->delete(300);
@@ -483,7 +462,6 @@ $response = $api->requestWithRetry(
     'orders',           // endpoint
     ['page' => 1],      // параметры
     'GET',              // метод
-    '',                 // модель (опционально)
     3,                  // максимум попыток
     1                   // задержка в секундах
 );
@@ -521,4 +499,3 @@ MIT License. См. [LICENSE](LICENSE) для деталей.
 - [example_simple.php](example_simple.php)
 - [example_updated.php](example_updated.php)
 - [example_error_handling.php](example_error_handling.php)
-

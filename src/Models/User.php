@@ -6,7 +6,7 @@ use Gbit\Roapp\RoappClient;
 
 class User extends Models
 {
-    private $endpoint = 'users';
+    private $endpoint = 'v2/users';
 
     public function __construct(RoappClient $api)
     {
@@ -50,7 +50,7 @@ class User extends Models
 
     public function getRoles(): array
     {
-        return $this->api->request('roles', [], 'GET');
+        return $this->api->request('v2/roles', [], 'GET');
     }
 
     public function assignRole(int $user_id, int $role_id): array
@@ -65,11 +65,11 @@ class User extends Models
 
     public function getCurrentUser(): array
     {
-        return $this->api->request('user', [], 'GET');
+        return $this->api->request('v2/user', [], 'GET');
     }
 
     public function updateProfile(array $data): array
     {
-        return $this->api->request('user', $data, 'PATCH');
+        return $this->api->request('v2/user', $data, 'PATCH');
     }
 }

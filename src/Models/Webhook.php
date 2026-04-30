@@ -6,7 +6,7 @@ use Gbit\Roapp\RoappClient;
 
 class Webhook extends Models
 {
-    private $endpoint = 'webhooks';
+    private $endpoint = 'v2/webhooks';
 
     public function __construct(RoappClient $api)
     {
