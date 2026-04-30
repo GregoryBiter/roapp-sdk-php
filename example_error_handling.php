@@ -8,25 +8,25 @@ use Gbit\Roapp\RoappApiException;
 // Пример использования с обработкой ошибок
 try {
     $client = new RoappClient('your-api-key-here');
-    
+
     // Выполняем запрос
     $response = $client->request('orders', [], 'GET');
-    
+
     echo "Успешный ответ: " . json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-    
+
 } catch (RoappApiException $e) {
     echo "Ошибка API Roapp:\n";
     echo "Код ошибки: " . $e->getHttpCode() . "\n";
     echo "Сообщение: " . $e->getMessage() . "\n";
     echo "Понятное сообщение: " . $e->getUserFriendlyMessage() . "\n";
     echo "URL запроса: " . $e->getApiUrl() . "\n";
-    
+
     // Получаем детали ошибки из ответа API
     $errorDetails = $e->getErrorDetails();
     if (!empty($errorDetails)) {
         echo "Детали ошибки от API: " . json_encode($errorDetails, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . "\n";
     }
-    
+
     // Проверяем тип ошибки
     if ($e->isAuthenticationError()) {
         echo "Проблема с аутентификацией - проверьте API ключ\n";
@@ -41,7 +41,7 @@ try {
             }
         }
     }
-    
+
 } catch (Exception $e) {
     echo "Общая ошибка: " . $e->getMessage() . "\n";
 }
@@ -49,12 +49,12 @@ try {
 // Пример с автоматическими повторами при rate limit
 try {
     $client = new RoappClient('your-api-key-here');
-    
+
     // Запрос с автоматическими повторами
-    $response = $client->requestWithRetry('orders', [], 'GET', '', 3, 2);
-    
+    $response = $client->requestWithRetry('orders', [], 'GET', 3, 2);
+
     echo "Ответ получен (возможно, после повторов): " . json_encode($response, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-    
+
 } catch (RoappApiException $e) {
     echo "Не удалось выполнить запрос даже с повторами: " . $e->getUserFriendlyMessage() . "\n";
 }

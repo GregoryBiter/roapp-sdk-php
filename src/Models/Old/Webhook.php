@@ -1,12 +1,13 @@
 <?php
 
-namespace Gbit\Roapp\Models;
+namespace Gbit\Roapp\Models\Old;
 
+use Gbit\Roapp\Models\Models;
 use Gbit\Roapp\RoappClient;
 
 class Webhook extends Models
 {
-    private $endpoint = 'webhooks';
+    private $endpoint = 'v2/webhooks';
 
     public function __construct(RoappClient $api)
     {

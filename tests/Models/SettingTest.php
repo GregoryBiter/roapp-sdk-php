@@ -1,115 +1,112 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
 use Gbit\Roapp\Models\Setting;
 use Gbit\Roapp\RoappClient;
+use PHPUnit\Framework\TestCase;
 
 class SettingTest extends TestCase
 {
-    private $apiMock;
-    private $setting;
-
-    protected function setUp(): void
+    public function testGetCompanySettingUsesDocumentedEndpoint(): void
     {
-        $this->apiMock = $this->createMock(RoappClient::class);
-        $this->setting = new Setting($this->apiMock);
-    }
-
-    public function testGetCompanySetting()
-    {
-        $this->apiMock->method('getData')
-            ->with('settings/company', [])
+        $apiMock = $this->createMock(RoappClient::class);
+        $apiMock->expects($this->once())
+            ->method('request')
+            ->with('settings/company', [], 'GET')
             ->willReturn(['company' => 'Test']);
 
-        $result = $this->setting->getCompanySetting();
-        $this->assertEquals(['company' => 'Test'], $result);
+        $setting = new Setting($apiMock);
+
+        $this->assertSame(['company' => 'Test'], $setting->getCompanySetting());
     }
 
-    public function testGetLocations()
+    public function testGetLocationsUsesDocumentedEndpoint(): void
     {
-        $this->apiMock->method('getData')
-            ->with('branches/', [])
+        $apiMock = $this->createMock(RoappClient::class);
+        $apiMock->expects($this->once())
+            ->method('request')
+            ->with('branches', [], 'GET')
             ->willReturn(['locations' => []]);
 
-        $this->setting = $this->getMockBuilder(Setting::class)
-            ->setConstructorArgs([$this->apiMock])
-            ->onlyMethods(['response'])
-            ->getMock();
-        $this->setting->expects($this->once())
-            ->method('response')
-            ->with(['locations' => []])
-            ->willReturn(['locations' => []]);
+        $setting = new Setting($apiMock);
 
-        $result = $this->setting->getLocations();
-        $this->assertEquals(['locations' => []], $result);
+        $this->assertSame(['locations' => []], $setting->getLocations());
     }
 
-    public function testGetAdCampaigns()
+    public function testGetAdCampaignsUsesDocumentedEndpoint(): void
     {
-        $this->apiMock->method('getData')
-            ->with('marketing/campaigns/', [])
+        $apiMock = $this->createMock(RoappClient::class);
+        $apiMock->expects($this->once())
+            ->method('request')
+            ->with('marketing/campaigns', [], 'GET')
             ->willReturn(['campaigns' => []]);
 
-        $this->setting = $this->getMockBuilder(Setting::class)
-            ->setConstructorArgs([$this->apiMock])
-            ->onlyMethods(['response'])
-            ->getMock();
-        $this->setting->expects($this->once())
-            ->method('response')
-            ->with(['campaigns' => []])
-            ->willReturn(['campaigns' => []]);
+        $setting = new Setting($apiMock);
 
-        $result = $this->setting->getAdCampaigns();
-        $this->assertEquals(['campaigns' => []], $result);
+        $this->assertSame(['campaigns' => []], $setting->getAdCampaigns());
     }
 
-    public function testGetPrices()
+    public function testGetPricesUsesDocumentedEndpoint(): void
     {
-        $this->apiMock->method('getData')
-            ->with('margins/', [])
+        $apiMock = $this->createMock(RoappClient::class);
+        $apiMock->expects($this->once())
+            ->method('request')
+            ->with('margins', [], 'GET')
             ->willReturn(['prices' => []]);
 
-        $result = $this->setting->getPrices();
-        $this->assertEquals(['prices' => []], $result);
+        $setting = new Setting($apiMock);
+
+        $this->assertSame(['prices' => []], $setting->getPrices());
     }
 
-    public function testGetEmployees()
+    public function testGetEmployeesUsesDocumentedEndpoint(): void
     {
-        $this->apiMock->method('getData')
-            ->with('employees/', [])
+        $apiMock = $this->createMock(RoappClient::class);
+        $apiMock->expects($this->once())
+            ->method('request')
+            ->with('employees', [], 'GET')
             ->willReturn(['employees' => []]);
 
-        $result = $this->setting->getEmployees();
-        $this->assertEquals(['employees' => []], $result);
+        $setting = new Setting($apiMock);
+
+        $this->assertSame(['employees' => []], $setting->getEmployees());
     }
 
-    public function testGetOrderTypes()
+    public function testGetOrderTypesUsesDocumentedEndpoint(): void
     {
-        $this->apiMock->method('request')
+        $apiMock = $this->createMock(RoappClient::class);
+        $apiMock->expects($this->once())
+            ->method('request')
             ->with('orders/types', [], 'GET')
             ->willReturn(['types' => []]);
 
-        $result = $this->setting->getOrderTypes();
-        $this->assertEquals(['types' => []], $result);
+        $setting = new Setting($apiMock);
+
+        $this->assertSame(['types' => []], $setting->getOrderTypes());
     }
 
-    public function testGetOrderCustomFields()
+    public function testGetOrderCustomFieldsUsesDocumentedEndpoint(): void
     {
-        $this->apiMock->method('request')
+        $apiMock = $this->createMock(RoappClient::class);
+        $apiMock->expects($this->once())
+            ->method('request')
             ->with('orders/custom-fields', [], 'GET')
             ->willReturn(['fields' => []]);
 
-        $result = $this->setting->getOrderCustomFields();
-        $this->assertEquals(['fields' => []], $result);
+        $setting = new Setting($apiMock);
+
+        $this->assertSame(['fields' => []], $setting->getOrderCustomFields());
     }
 
-    public function testGetBookList()
+    public function testGetBookListUsesDocumentedEndpoint(): void
     {
-        $this->apiMock->method('getData')
-            ->with('book/list/', [])
+        $apiMock = $this->createMock(RoappClient::class);
+        $apiMock->expects($this->once())
+            ->method('request')
+            ->with('book/list', [], 'GET')
             ->willReturn(['books' => []]);
 
-        $result = $this->setting->getBookList();
-        $this->assertEquals(['books' => []], $result);
+        $setting = new Setting($apiMock);
+
+        $this->assertSame(['books' => []], $setting->getBookList());
     }
 }

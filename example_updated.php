@@ -2,6 +2,13 @@
 
 require_once 'vendor/autoload.php';
 
+/**
+ * ⚠️ ВНИМАНИЕ: На данный момент не рекомендуется использовать классы из Models (Order, People и т.д.),
+ * так как они находятся в процессе переработки под новую структуру API.
+ * Рекомендуется использовать методы RoappClient напрямую (см. example_simple.php).
+ */
+
+
 use Gbit\Roapp\RoappClient;
 use Gbit\Roapp\Models\Order;
 use Gbit\Roapp\Models\People;

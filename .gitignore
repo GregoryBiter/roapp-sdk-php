@@ -2,3 +2,4 @@ test.php
 logs/error.log
 vendor/
 *.Identifier
+.codex

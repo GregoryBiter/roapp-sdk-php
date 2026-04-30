@@ -1,12 +1,13 @@
 <?php
 
-namespace Gbit\Roapp\Models;
+namespace Gbit\Roapp\Models\v1;
 
 use Gbit\Roapp\RoappClient;
+use Gbit\Roapp\Models\Models;
 
 class Kit extends Models
 {
-    private $endpoint = 'kits';
+    private $endpoint = 'bundles';
 
     public function __construct(RoappClient $api)
     {

@@ -1,12 +1,18 @@
 <?php
 
-namespace Gbit\Roapp\Models;
+namespace Gbit\Roapp\Models\Old;
 
+use Gbit\Roapp\Models\Models;
 use Gbit\Roapp\RoappClient;
 
+/**
+ * Class Booking
+ *
+ * @package Gbit\Roapp\Models
+ */
 class Booking extends Models
 {
-    private $endpoint = 'bookings';
+    private $endpoint = 'v2/bookings';
 
     public function __construct(RoappClient $api)
     {
@@ -38,21 +44,23 @@ class Booking extends Models
         return $this->api->request($this->endpoint . '/' . $booking_id, [], 'DELETE');
     }
 
-    public function confirm(int $booking_id): array
+    public function getService(int $booking_id): array
     {
-        return $this->api->request($this->endpoint . '/' . $booking_id . '/confirm', [], 'POST');
+        return $this->api->request($this->endpoint . '/' . $booking_id . '/items', [], 'GET');
     }
 
-    public function cancel(int $booking_id, string $reason = ''): array
+    public function addService(int $booking_id, array $data): array
     {
-        return $this->api->request($this->endpoint . '/' . $booking_id . '/cancel', ['reason' => $reason], 'POST');
+        return $this->api->request($this->endpoint . '/' . $booking_id . '/items', $data, 'POST');
     }
 
-    public function reschedule(int $booking_id, string $new_date, string $new_time): array
+    public function updateService(int $booking_id, int $service_id, array $data): array
     {
-        return $this->api->request($this->endpoint . '/' . $booking_id . '/reschedule', [
-            'date' => $new_date,
-            'time' => $new_time
-        ], 'POST');
+        return $this->api->request($this->endpoint . '/' . $booking_id . '/items/' . $service_id, $data, 'PATCH');
+    }
+
+    public function deleteService(int $booking_id, int $service_id): array
+    {
+        return $this->api->request($this->endpoint . '/' . $booking_id . '/items/' . $service_id, [], 'DELETE');
     }
 }

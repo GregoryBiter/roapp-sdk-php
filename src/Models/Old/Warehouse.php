@@ -1,7 +1,8 @@
 <?php
 
-namespace Gbit\Roapp\Models;
+namespace Gbit\Roapp\Models\Old;
 
+use Gbit\Roapp\Models\Models;
 use Gbit\Roapp\RoappClient;
 
 class Warehouse extends Models
@@ -36,7 +37,7 @@ class Warehouse extends Models
         return $this->api->request($this->endpoint . '/categories', [], 'GET');
     }
 
-    public function getPostings(int $warehouse_id = null, string $created_at = null, array $ids = null): array
+    public function getPostings(?int $warehouse_id = null, ?string $created_at = null, ?array $ids = null): array
     {
         $params = [];
         if ($warehouse_id !== null) {

@@ -35,7 +35,7 @@ class RoappApiException extends Exception
         array $errorDetails = [],
         string $apiUrl = '',
         array $requestData = [],
-        Exception $previous = null
+        ?Exception $previous = null
     ) {
         parent::__construct($message, $httpCode, $previous);
 

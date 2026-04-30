@@ -1,12 +1,13 @@
 <?php
 
-namespace Gbit\Roapp\Models;
+namespace Gbit\Roapp\Models\Old;
 
+use Gbit\Roapp\Models\Models;
 use Gbit\Roapp\RoappClient;
 
 class Cashbox extends Models
 {
-    private $endpoint = 'cashbox';
+    private $endpoint = 'v2/cashbox';
 
     public function __construct(RoappClient $api)
     {
@@ -25,7 +26,7 @@ class Cashbox extends Models
     
     public function getCashflowItems(): array
     {
-        return $this->api->request('cashflowitems', [], 'GET');
+        return $this->api->request('v2/cashflowitems', [], 'GET');
     }
 
     public function createPayment(array $data = []): array

@@ -1,12 +1,13 @@
 <?php
 
-namespace Gbit\Roapp\Models;
+namespace Gbit\Roapp\Models\Old;
 
+use Gbit\Roapp\Models\Models;
 use Gbit\Roapp\RoappClient;
 
 class Report extends Models
 {
-    private $endpoint = 'reports';
+    private $endpoint = 'v2/reports';
 
     public function __construct(RoappClient $api)
     {

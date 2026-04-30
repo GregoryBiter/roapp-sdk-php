@@ -1,12 +1,13 @@
 <?php
 
-namespace Gbit\Roapp\Models;
+namespace Gbit\Roapp\Models\Old;
 
+use Gbit\Roapp\Models\Models;
 use Gbit\Roapp\RoappClient;
 
 class Estimate extends Models
 {
-    private $endpoint = 'estimates';
+    private $endpoint = 'v2/estimates';
 
     public function __construct(RoappClient $api)
     {
@@ -15,7 +16,7 @@ class Estimate extends Models
 
     public function getStatuses(): array
     {
-        return $this->api->request('statuses/estimates', [], 'GET');
+        return $this->api->request($this->endpoint . '/statuses', [], 'GET');
     }
 
     public function get(array $arr = []): array
@@ -50,7 +51,7 @@ class Estimate extends Models
 
     public function updateItem(int $estimate_id, int $item_id, array $data): array
     {
-        return $this->api->request("{$this->endpoint}/{$estimate_id}/items/{$item_id}", $data, 'POST');
+        return $this->api->request("{$this->endpoint}/{$estimate_id}/items/{$item_id}", $data, 'PATCH');
     }
 
     public function setStatus(int $estimate_id, int $status_id, string $comment): array
